@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/workout_data.dart';
+import 'workout_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,6 +63,18 @@ class _HomeScreenState extends State<HomeScreen> {
     newWorkoutNameController.clear();
   }
 
+  // go to workout screen
+  void goToWorkoutScreen(String workoutName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WorkoutScreen(
+          workoutName: workoutName,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<WorkoutData>(
@@ -77,6 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
           itemCount: value.getWorkoutList().length,
           itemBuilder: (context, index) => ListTile(
             title: Text(value.getWorkoutList()[index].name),
+            trailing: IconButton(
+              icon: const Icon(Icons.arrow_forward_ios),
+              onPressed: () =>
+                  goToWorkoutScreen(value.getWorkoutList()[index].name),
+            ),
           ),
         ),
       ),
