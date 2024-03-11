@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // text controller
-  final newWorkoutNameController = TextEditingController();
+  final workoutNameController = TextEditingController();
 
   // create a new workout
   void createNewWorkout() {
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => AlertDialog(
         title: const Text('Create new workout'),
         content: TextField(
-          controller: newWorkoutNameController,
+          controller: workoutNameController,
         ),
         actions: [
           // save button
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // save workout
   void save() {
-    String newWorkoutName = newWorkoutNameController.text;
+    String newWorkoutName = workoutNameController.text;
     Provider.of<WorkoutData>(context, listen: false).addWorkout(newWorkoutName);
 
     // pop dialog box
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // clear controllers
   void clear() {
-    newWorkoutNameController.clear();
+    workoutNameController.clear();
   }
 
   // go to workout screen
