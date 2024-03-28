@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/workout_data.dart';
+import '../widgets/heat_map.dart';
 import 'workout_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -86,25 +87,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Consumer<WorkoutData>(
       builder: (context, value, child) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Workout Tracker'),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: createNewWorkout,
-          child: const Icon(Icons.add),
-        ),
-        body: ListView.builder(
-          itemCount: value.getWorkoutList().length,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(value.getWorkoutList()[index].name),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () =>
-                  goToWorkoutScreen(value.getWorkoutList()[index].name),
-            ),
+          backgroundColor: Colors.grey[300],
+          appBar: AppBar(
+            title: const Text('Workout Tracker'),
           ),
-        ),
-      ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: createNewWorkout,
+            child: const Icon(Icons.add),
+          ),
+          body: ListView(
+            children: [
+              // HEAT MAP
+              MyHeatMap(
+                datasets: value.heatMapDataSet,
+                startDateYYYYMMDD: value.getStartDate(),
+              ),
+
+              // WORKOUT LIST
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: value.getWorkoutList().length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(value.getWorkoutList()[index].name),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios),
+                    onPressed: () =>
+                        goToWorkoutScreen(value.getWorkoutList()[index].name),
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
